@@ -4,13 +4,13 @@ import SpriteKit
 class CustomShapeNode : SKShapeNode {
     var xPos : CGFloat
     var yPos : CGFloat
-    var delay : Double
+    //var delay : Double
     var duration : Double
     
     override init() {
         self.xPos = 0
         self.yPos = 0
-        self.delay = 0.0
+        //self.delay = 0.0
         self.duration = 1.0
         super.init()
     }
@@ -27,8 +27,7 @@ class CustomShapeNode : SKShapeNode {
         fatalError("init(coder:) has not been implemented.")
     }
     
-    func move(direction:Direction) {
-        self.delay += 1.0
+    func move(direction:Direction, delay:Double) {
         switch direction {
         case .Up:
             yPos += 50
