@@ -1,4 +1,4 @@
-//: A SpriteKit based Playground
+//: A SpriteKit based Playg round
 
 import PlaygroundSupport
 import SpriteKit

@@ -2,23 +2,6 @@ import Foundation
 import PlaygroundSupport
 import SpriteKit
 
-class SortDirector {
-    var sortNodeList : [SortNode] = []
-    var delay : Double = 0.0
-    func move(index:Int, direction:Direction) {
-        self.delay += 1.0
-        sortNodeList[index].shape.move(direction: direction, delay: self.delay)
-    }
-    func getIndex(fromValue value:String) -> Int {
-        for index in 0..<sortNodeList.count {
-            if sortNodeList[index].value == value {
-                return index
-            }
-        }
-        return -1
-    }
-}
-
 struct SortNode {
     var shape : CustomShapeNode
     var value : String
@@ -39,51 +22,27 @@ public class GameScene: SKScene {
     }
     
     public override func didMove(to view: SKView) {
-        let sorter = SortDirector()
+        let sorter = SortDirector(scene:self)
+        sorter.addSortNode(color: UIColor.blue, value: "3")
+        sorter.addSortNode(color: UIColor.gray, value: "9")
+        sorter.addSortNode(color: UIColor.orange, value: "6")
+        sorter.addSortNode(color: UIColor.darkGray, value: "7")
         
-        //Create Blue Node
-        let blueSquare = CustomShapeNode(rectOf: CGSize(width: 50, height: 50),
-                                         position: CGPoint(x: -50, y: 0))
-        blueSquare.fillColor = UIColor.blue
-        let blueLabel = SKLabelNode(text: "3")
-        blueLabel.horizontalAlignmentMode = .center
-        blueLabel.verticalAlignmentMode = .center
-        blueLabel.fontName = "Menlo"
-        blueSquare.addChild(blueLabel)
-        let blueNode = SortNode(shape:blueSquare, value: "3")
-        sorter.sortNodeList.append(blueNode)
+        sorter.addSortNode(color: UIColor.cyan, value: "8")
+        sorter.addSortNode(color: UIColor.magenta, value: "5")
+        sorter.addSortNode(color: UIColor.purple, value: "4")
         
-        addChild(blueNode.shape)
-
-        //Create Green Node
-        let greenSquare = CustomShapeNode(rectOf: CGSize(width: 50, height: 50), position: CGPoint(x: 0, y: 0))
-        greenSquare.fillColor = UIColor.green
-        let greenLabel = SKLabelNode(text:"2")
-        greenLabel.horizontalAlignmentMode = .center
-        greenLabel.verticalAlignmentMode = .center
-        greenLabel.fontName = "Menlo"
-        greenSquare.addChild(greenLabel)
-        let greenNode = SortNode(shape:greenSquare, value: "2")
-        sorter.sortNodeList.append(greenNode)
         
-        addChild(greenNode.shape)
-
-        //Create Red Node
-        let redSquare = CustomShapeNode(rectOf: CGSize(width: 50, height: 50), position: CGPoint(x: 50, y: 0))
-        redSquare.fillColor = UIColor.red
-        let redLabel = SKLabelNode(text:"1")
-        redLabel.horizontalAlignmentMode = .center
-        redLabel.verticalAlignmentMode = .center
-        redLabel.fontName = "Menlo"
-        redSquare.addChild(redLabel)
-        let redNode = SortNode(shape:redSquare, value: "1")
-        sorter.sortNodeList.append(redNode)
-
-        addChild(redNode.shape)
-
-        insertionSort(director: sorter)
+        sorter.addSortNode(color: UIColor.red, value: "1")
+        sorter.addSortNode(color: UIColor.green, value: "2")
+        sorter.ready()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { // Change `2.0` to the desired number of seconds.
+            // Code you want to be delayed
+            self.insertionSort(director: sorter)
+        }
     }
-
+ 
     func insertionSort(director:SortDirector){
         var A = director.sortNodeList
         var i = 1
