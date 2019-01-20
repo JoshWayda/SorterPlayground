@@ -32,15 +32,11 @@ public class GameScene: SKScene {
         sorter.addSortNode(color: UIColor.magenta, value: "5")
         sorter.addSortNode(color: UIColor.purple, value: "4")
         
-        
         sorter.addSortNode(color: UIColor.red, value: "1")
         sorter.addSortNode(color: UIColor.green, value: "2")
         sorter.ready()
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { // Change `2.0` to the desired number of seconds.
-            // Code you want to be delayed
-            self.insertionSort(director: sorter)
-        }
+        self.insertionSort(director: sorter)
     }
  
     func insertionSort(director:SortDirector){
