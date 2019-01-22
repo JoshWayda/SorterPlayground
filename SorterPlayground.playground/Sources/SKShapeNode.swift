@@ -10,7 +10,7 @@ class CustomShapeNode : SKShapeNode {
         self.xPos = 0
         self.yPos = 0
         //self.delay = 0.0
-        self.duration = 0.25
+        self.duration = 0.5
         super.init()
     }
 /*
@@ -37,22 +37,22 @@ class CustomShapeNode : SKShapeNode {
         switch direction {
         case .Up:
             yPos += 50
-            print("move to y:\(yPos)")
+            //print("move to y:\(yPos)")
             self.run(SKAction.sequence([SKAction.wait(forDuration: delay),
                                         SKAction.moveTo(y: yPos, duration: duration)]))
         case .Down:
-                        yPos -= 50
-            print("move to y:\(yPos)")
+            yPos -= 50
+            //print("move to y:\(yPos)")
             self.run(SKAction.sequence([SKAction.wait(forDuration: delay),
                                         SKAction.moveTo(y: yPos, duration: duration)]))
         case .Left:
             xPos -= 50
-            print("move to x:\(xPos)")
+            //print("move to x:\(xPos)")
             self.run(SKAction.sequence([SKAction.wait(forDuration: delay),
                                         SKAction.moveTo(x: xPos, duration: duration)]))
         case .Right:
             xPos += 50
-            print("move to x:\(xPos)")
+            //print("move to x:\(xPos)")
             self.run(SKAction.sequence([SKAction.wait(forDuration: delay),
                                         SKAction.moveTo(x: xPos, duration: duration)]))
         }
