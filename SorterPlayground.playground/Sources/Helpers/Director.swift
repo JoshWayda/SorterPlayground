@@ -24,8 +24,26 @@ class SortDirector {
     }
     
     func move(index:Int, direction:Direction) {
-        self.delay += 0.25
+        self.delay += 0.5
         sortNodeList[index].shape.move(direction: direction, delay: self.delay)
+    }
+    
+    func swap(leftIndex:Int, rightIndex: Int, distance: Int) {
+        self.delay += 0.5
+        sortNodeList[leftIndex].shape.move(direction: .Down, delay: self.delay)
+        sortNodeList[rightIndex].shape.move(direction: .Up, delay: self.delay)
+
+        for _ in 0 ..< distance {
+            self.delay += 0.5
+            //print("move sortNodeList[\(leftIndex)]:\(sortNodeList[leftIndex].value) right")
+            //print("move sortNodeList[\(rightIndex)]:\(sortNodeList[rightIndex].value) left")
+            sortNodeList[leftIndex].shape.move(direction: .Right, delay: self.delay)
+            sortNodeList[rightIndex].shape.move(direction: .Left, delay: self.delay)
+        }
+        self.delay += 0.5
+        sortNodeList[leftIndex].shape.move(direction: .Up, delay: self.delay)
+        sortNodeList[rightIndex].shape.move(direction: .Down, delay: self.delay)
+        //find distance between left and right index.
     }
     
     func getIndex(fromValue value:String) -> Int {
@@ -83,7 +101,7 @@ class SortDirector {
         for index in 0..<nodeCount {
             sortNodeList[index].shape.setInitialPosition(x:startPos)
             scene.addChild(sortNodeList[index].shape)
-            print("sortNodeList[\(index)]: \(sortNodeList[index].value) x:\(startPos)")
+            //print("sortNodeList[\(index)]: \(sortNodeList[index].value) x:\(startPos)")
             startPos += CGFloat(squareSize)
         }
         
