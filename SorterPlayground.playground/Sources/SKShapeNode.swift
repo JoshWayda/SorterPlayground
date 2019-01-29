@@ -13,15 +13,7 @@ class CustomShapeNode : SKShapeNode {
         self.duration = 0.5
         super.init()
     }
-/*
-    convenience init(rectOf: CGSize, position:CGPoint) {
-        self.init(rectOf: rectOf)
-        self.position.x = position.x
-        self.position.y = position.y
-        xPos = position.x
-        yPos = position.y
-    }
-*/
+
     func setInitialPosition(x:CGFloat) {
         self.position.x = x
         self.position.y = 0
@@ -31,6 +23,11 @@ class CustomShapeNode : SKShapeNode {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented.")
+    }
+    
+    func moveTo(xIncrement : CGFloat, yIncrement : CGFloat, delay : Double) {
+        self.run(SKAction.sequence([SKAction.wait(forDuration: delay),
+                                    SKAction.move(to: CGPoint(x:xPos,y:yPos), duration: duration)]))
     }
     
     func move(direction:Direction, delay:Double) {

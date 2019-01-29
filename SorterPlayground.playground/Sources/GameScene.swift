@@ -23,18 +23,25 @@ public class GameScene: SKScene {
     
     public override func didMove(to view: SKView) {
         let sorter = SortDirector(scene:self)
+        
         //9 2 1 8 4 5 7 6 3
         sorter.addSortNode(color: UIColor(rgb: 0x967ADC), value: "9")
-        sorter.addSortNode(color: UIColor(rgb: 0xE9573F), value: "2")
-        sorter.addSortNode(color: UIColor(rgb: 0xA0D468), value: "4")
         sorter.addSortNode(color: UIColor(rgb: 0x4A89DC), value: "7")
         sorter.addSortNode(color: UIColor(rgb: 0x4BCFAD), value: "5")
-        sorter.addSortNode(color: UIColor(rgb: 0x5D9CEC), value: "6")
-        sorter.addSortNode(color: UIColor(rgb: 0xED5565), value: "1")
         sorter.addSortNode(color: UIColor(rgb: 0xFFCE54), value: "3")
+        sorter.addSortNode(color: UIColor(rgb: 0xED5565), value: "1")
         sorter.addSortNode(color: UIColor(rgb: 0xAC92EC), value: "8")
+        sorter.addSortNode(color: UIColor(rgb: 0x5D9CEC), value: "6")
+        sorter.addSortNode(color: UIColor(rgb: 0xA0D468), value: "4")
+        sorter.addSortNode(color: UIColor(rgb: 0xE9573F), value: "2")
+
         sorter.ready()
-        self.bubbleSort(director: sorter)
+        //sorter.copy(leftIndex: 0, rightIndex: 1, distance: 1)
+        
+        
+        self.MergeSort(director: sorter)
+        //self.bubbleSort(director: sorter)
+        //self.TopDownMergeSort(A: &<#T##[SortNode]#>, B: &<#T##[SortNode]#>, n: <#T##Int#>)
         //self.selectionSort(director: sorter)
         //sorter.swap(leftIndex: 2, rightIndex: 7)
         //self.insertionSort(director: sorter)
@@ -120,6 +127,69 @@ public class GameScene: SKScene {
         } while swapped
     }
     
+    //*********************************
+    //MERGE SORT IMPLEMENTATION
+    //*********************************
+    func MergeSort(director: SortDirector) {
+        var toSort : [SortNode] = director.sortNodeList
+        var myCopy : [SortNode] = []
+        TopDownMergeSort(A:&toSort,B:&myCopy,n:toSort.count)
+        printlist(list: toSort)
+    }
+    
+    func TopDownMergeSort(A:inout [SortNode], B:inout [SortNode], n : Int) {
+        CopyArray(A: A, iBegin: 0, iEnd: n, B: &B)
+        TopDownSplitMerge(B: &B, iBegin: 0, iEnd: n, A: &A)
+    }
+    
+    func TopDownSplitMerge(B:inout [SortNode], iBegin : Int, iEnd : Int, A:inout [SortNode]) {
+        if iEnd - iBegin < 2 {
+            return
+        }
+        
+        let iMiddle = (iEnd + iBegin) / 2
+        TopDownSplitMerge(B: &A, iBegin: iBegin, iEnd: iMiddle, A: &B)
+        TopDownSplitMerge(B: &A, iBegin: iMiddle, iEnd:iEnd, A: &B)
+        TopDownMerge(A: &B, iBegin: iBegin, iMiddle: iMiddle, iEnd: iEnd, B: &A)
+    }
+    
+    var mergeSortDelay : Double = 0.0
+    func TopDownMerge(A:inout [SortNode], iBegin:Int, iMiddle:Int, iEnd:Int, B:inout [SortNode]) {
+        var i = iBegin
+        var j = iMiddle
+        for k in iBegin ..< iEnd {
+            mergeSortDelay += 1.0
+            if (i < iMiddle && (j >= iEnd || A[i].value <= A[j].value)) {
+                A[i].shape.xPos += CGFloat(50*(k-i))
+                A[i].shape.yPos += -100
+                A[i].shape.moveTo(xIncrement: A[i].shape.xPos, yIncrement: A[i].shape.yPos, delay: mergeSortDelay)
+                B[k] = A[i]
+                i = i + 1
+            }
+            else {
+                A[j].shape.xPos += CGFloat(50*(k-j))
+                A[j].shape.yPos += -100
+                A[j].shape.moveTo(xIncrement: A[j].shape.xPos, yIncrement: A[j].shape.yPos, delay: mergeSortDelay)
+                B[k] = A[j]
+                j = j + 1
+            }
+        }
+        
+        mergeSortDelay += 1.0
+        //move all back up to zero
+        for k in iBegin ..< iEnd {
+            A[k].shape.yPos += 100
+            A[k].shape.moveTo(xIncrement: A[k].shape.xPos, yIncrement: A[k].shape.yPos, delay: mergeSortDelay)
+        }
+    }
+    
+    func CopyArray(A:[SortNode], iBegin : Int, iEnd : Int, B:inout [SortNode]) {
+        for k in iBegin ..< iEnd {
+            //print("k:\(k)")
+            B.append(A[k])
+        }
+    }
+        
     func printlist(list:[SortNode]) {
         var l : String = ""
         for n in list {
